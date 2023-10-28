@@ -3,20 +3,24 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-shell",
+    name: "swell",
+    platforms: [
+        // TODO: Add other systems
+        .macOS(.v13),
+    ],
     products: [
         .library(
-            name: "swift-shell",
-            targets: ["SwiftShell"]
+            name: "Swell",
+            targets: ["Swell"]
         ),
     ],
     targets: [
         .target(
-            name: "SwiftShell"
+            name: "Swell"
         ),
         .testTarget(
-            name: "SwiftShellTests",
-            dependencies: ["SwiftShell"]
+            name: "SwellTests",
+            dependencies: ["Swell"]
         ),
     ]
 )
