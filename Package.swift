@@ -5,7 +5,6 @@ import PackageDescription
 let package = Package(
     name: "swell",
     platforms: [
-        // TODO: Add other systems
         .macOS(.v13),
     ],
     products: [
