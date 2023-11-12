@@ -5,13 +5,13 @@ import PackageDescription
 let package = Package(
     name: "swell",
     platforms: [
-        .macOS(.v13),
+        .macOS(.v13)
     ],
     products: [
         .library(
             name: "Swell",
             targets: ["Swell"]
-        ),
+        )
     ],
     targets: [
         .target(
