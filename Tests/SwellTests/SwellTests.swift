@@ -5,15 +5,24 @@ final class SwellTests: XCTestCase {
 
     func testEcho() async throws {
         let echo = try await Swell.run("echo", "How swell!")
-        XCTAssertEqual(echo, "How swell!\n")
+        XCTAssertEqual(echo.output, "How swell!")
     }
 
-    func testError() async throws {
+    func testCommandNotFoundError() async throws {
         do {
             _ = try await Swell.run("not-a-command")
             XCTFail("Expected an error")
         } catch {
             XCTAssertEqual(error.localizedDescription, "Command not found: not-a-command")
+        }
+    }
+
+    func testNonZeroExitError() async throws {
+        do {
+            _ = try await Swell.run("false")
+            XCTFail("Expected an error")
+        } catch {
+            XCTAssertEqual(error.localizedDescription, "Command exited with non-zero exit code: 1")
         }
     }
 

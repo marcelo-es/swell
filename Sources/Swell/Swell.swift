@@ -8,11 +8,11 @@ public struct Swell {
 
     /// Run a command found in the path and return its output.
     @discardableResult
-    public static func run(_ commandName: String, _ arguments: String...) async throws -> String {
+    public static func run(_ commandName: String, _ arguments: String...) async throws -> (output: String, error: String) {
         guard let commandPath = findFilePath(for: commandName) else {
             throw SwellError.commandNotFound(commandName)
         }
-        
+
         let process = Process()
         process.executableURL = URL(filePath: commandPath)
         process.arguments = arguments
@@ -20,13 +20,25 @@ public struct Swell {
         let outputPipe = Pipe()
         process.standardOutput = outputPipe
 
-        async let output = outputPipe.fileHandleForReading.bytes.reduce(into: Data(), { $0.append($1) })
+        let errorPipe = Pipe()
+        process.standardError = errorPipe
+
+        async let outputLines = outputPipe.fileHandleForReading.bytes.lines.reduce(into: "") { $0.append($1) }
+        async let errorLines = errorPipe.fileHandleForReading.bytes.lines.reduce(into: "") { $0.append($1) }
 
         try process.run()
         process.waitUntilExit()
 
-        let data = try await output
-        return String(data: data, encoding: .utf8) ?? ""
+        let terminationStatus = process.terminationStatus
+        guard terminationStatus == 0 else {
+            throw SwellError.nonZeroExit(
+                code: Int(terminationStatus),
+                output: try await outputLines,
+                error: try await errorLines
+            )
+        }
+
+        return try await (outputLines, errorLines)
     }
 
     static func findFilePath(for commandName: String) -> FilePath? {
@@ -49,15 +61,18 @@ public struct Swell {
 public enum SwellError: Error {
 
     case commandNotFound(String)
+    case nonZeroExit(code: Int, output: String, error: String)
 
 }
 
 extension SwellError: LocalizedError {
-    
+
     public var errorDescription: String? {
         switch self {
         case .commandNotFound(let commandName):
             return "Command not found: \(commandName)"
+        case .nonZeroExit(let code, _, _):
+            return "Command exited with non-zero exit code: \(code)"
         }
     }
 
