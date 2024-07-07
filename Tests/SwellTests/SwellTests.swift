@@ -6,7 +6,12 @@ final class SwellTests: XCTestCase {
 
     func testEcho() async throws {
         let echo = try await Swell.run("echo", "How swell!")
-        XCTAssertEqual(echo.output, "How swell!")
+        XCTAssertEqual(echo.output, "How swell!\n")
+    }
+
+    func testMultipleLines() async throws {
+        let echo = try await Swell.run("echo", "How swell!\nHow are you?")
+        XCTAssertEqual(echo.output, "How swell!\nHow are you?\n")
     }
 
     func testCommandNotFoundError() async throws {

@@ -23,8 +23,8 @@ public struct Swell {
         let errorPipe = Pipe()
         process.standardError = errorPipe
 
-        async let outputLines = outputPipe.fileHandleForReading.bytes.lines.reduce(into: "") { $0.append($1) }
-        async let errorLines = errorPipe.fileHandleForReading.bytes.lines.reduce(into: "") { $0.append($1) }
+        async let outputLines = outputPipe.fileHandleForReading.bytes.characters.reduce(into: "") { $0.append($1) }
+        async let errorLines = errorPipe.fileHandleForReading.bytes.characters.reduce(into: "") { $0.append($1) }
 
         try process.run()
         process.waitUntilExit()
