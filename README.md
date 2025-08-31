@@ -9,11 +9,11 @@ Just add Swell to your package dependencies:
 ```swift
 dependencies: [
     // ...
-    .package(url: "https://github.com/marcelo-es/swell", from: "0.0.1"),
+    .package(url: "https://github.com/marcelo-es/swell", from: "0.0.2"),
 ]
 ```
 
-And add Swell to your target's dependencies:
+And to your target's dependencies:
 
 ```swift
 targets: [
@@ -33,7 +33,7 @@ let (output, error) = try await Swell.run("echo", "Hello world")
 Or, if you are only interested in the standard output:
 
 ```swift
-let output = try = try await Swell.run("echo", "Hello world").output
+let output = try await Swell.run("echo", "Hello world").output
 ```
 
 Swell looks for the executable in your `$PATH` for you.

@@ -58,7 +58,7 @@ public struct Swell {
 
 }
 
-public enum SwellError: Error {
+public enum SwellError: Error, Equatable {
 
     case commandNotFound(String)
     case nonZeroExit(code: Int, output: String, error: String)
