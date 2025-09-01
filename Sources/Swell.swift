@@ -53,7 +53,8 @@ public struct Swell {
 
     static var searchPath: [FilePath] {
         let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
-        return path.split(separator: ":").map { FilePath(String($0)) }
+        let searchPath = path.split(separator: ":").map { FilePath(String($0)) }
+        return [FilePath()] + searchPath
     }
 
 }
