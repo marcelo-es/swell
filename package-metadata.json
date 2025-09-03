@@ -1,0 +1,12 @@
+{
+  "author": {
+    "name": "Marcelo Esperidiao"
+  },
+  "description": "Swell is a Swift shell interface",
+  "licenseURL": "https://github.com/marcelo-es/swell/blob/main/LICENSE",
+  "readmeURL": "https://github.com/marcelo-es/swell/blob/main/README.md",
+  "repositoryURLs": [
+    "https://github.com/marcelo-es/swell",
+    "git@github.com:marcelo-es/swell.git"
+  ]
+}
